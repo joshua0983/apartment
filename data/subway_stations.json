@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Astoria Blvd",
+    "lines": ["N", "W"],
+    "latitude": 40.770258,
+    "longitude": -73.917843
+  },
+  {
+    "name": "Astoria-Ditmars Blvd",
+    "lines": ["N", "W"],
+    "latitude": 40.775036,
+    "longitude": -73.912034
+  },
+  {
+    "name": "30 Av",
+    "lines": ["N", "W"],
+    "latitude": 40.766779,
+    "longitude": -73.921479
+  },
+  {
+    "name": "36 Av",
+    "lines": ["N", "W"],
+    "latitude": 40.756804,
+    "longitude": -73.929575
+  },
+  {
+    "name": "39 Av",
+    "lines": ["N", "W"],
+    "latitude": 40.752769,
+    "longitude": -73.933794
+  },
+  {
+    "name": "Queensboro Plaza",
+    "lines": ["N", "W", "7"],
+    "latitude": 40.750582,
+    "longitude": -73.940202
+  },
+  {
+    "name": "Queens Plaza",
+    "lines": ["E", "M", "R"],
+    "latitude": 40.748973,
+    "longitude": -73.937243
+  },
+  {
+    "name": "Court Sq",
+    "lines": ["E", "M", "7"],
+    "latitude": 40.747023,
+    "longitude": -73.945264
+  },
+  {
+    "name": "Court Sq-23 St",
+    "lines": ["G"],
+    "latitude": 40.747846,
+    "longitude": -73.946
+  },
+  {
+    "name": "Flushing-Main St",
+    "lines": ["7"],
+    "latitude": 40.759465,
+    "longitude": -73.830109
+  },
+  {
+    "name": "Times Sq-42 St",
+    "lines": ["1", "2", "3", "7", "N", "Q", "R", "W", "S"],
+    "latitude": 40.755983,
+    "longitude": -73.987495
+  },
+  {
+    "name": "Grand Central-42 St",
+    "lines": ["4", "5", "6", "7", "S"],
+    "latitude": 40.751776,
+    "longitude": -73.976848
+  },
+  {
+    "name": "Union Square-14 St",
+    "lines": ["4", "5", "6", "L", "N", "Q", "R", "W"],
+    "latitude": 40.734673,
+    "longitude": -73.989951
+  },
+  {
+    "name": "Herald Sq-34 St",
+    "lines": ["B", "D", "F", "M", "N", "Q", "R", "W"],
+    "latitude": 40.749567,
+    "longitude": -73.987823
+  },
+  {
+    "name": "Penn Station-34 St",
+    "lines": ["1", "2", "3", "A", "C", "E"],
+    "latitude": 40.752287,
+    "longitude": -73.993391
+  },
+  {
+    "name": "Atlantic Av-Barclays Ctr",
+    "lines": ["2", "3", "4", "5", "B", "D", "N", "Q", "R"],
+    "latitude": 40.683666,
+    "longitude": -73.977225
+  }
+]
