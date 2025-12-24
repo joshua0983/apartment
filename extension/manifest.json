@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "NYC Apartment Evaluator",
+  "version": "1.0.0",
+  "description": "Automatically evaluate NYC apartments based on commute, transit, and amenities",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://*.streeteasy.com/*",
+    "https://*.zillow.com/*",
+    "https://*.apartments.com/*",
+    "https://*.renthop.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.streeteasy.com/*",
+        "https://*.zillow.com/*",
+        "https://*.apartments.com/*",
+        "https://*.renthop.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

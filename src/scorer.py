@@ -107,23 +107,32 @@ class ApartmentScorer:
         if not valid_commutes:
             return 0.0
         
+        # Strict requirement: 5/5 only if ALL offices are < 30 mins
+        max_commute = max(valid_commutes)
+        if max_commute < 30:
+            return 5.0
+            
+        # Otherwise score based on best commute, but cap at 4.0
         min_commute = min(valid_commutes)
         
         # Scoring: 5.0 for <20 min, 4.0 for 20-30, decreasing after 30
         if min_commute < 20:
-            return 5.0
+            base_score = 5.0
         elif min_commute < 30:
-            return 4.0 - ((min_commute - 20) / 10) * 1.0
+            base_score = 4.0 - ((min_commute - 20) / 10) * 1.0
         elif min_commute < 45:
-            return 3.0 - ((min_commute - 30) / 15) * 2.0
+            base_score = 3.0 - ((min_commute - 30) / 15) * 2.0
         else:
-            return max(0.0, 1.0 - ((min_commute - 45) / 30))
+            base_score = max(0.0, 1.0 - ((min_commute - 45) / 30))
+            
+        return min(4.0, base_score)
     
     def _score_subway_proximity(self, subway_data: Dict) -> float:
         """Score subway proximity (0-5 scale)"""
-        walk_time = subway_data.get('walk_time_minutes', float('inf'))
+        walk_time = subway_data.get('walk_time_minutes')
         
-        if walk_time == float('inf'):
+        # Handle None or missing walk time
+        if walk_time is None:
             return 0.0
         
         # Scoring: 5.0 for <5 min, decreasing linearly
@@ -139,23 +148,16 @@ class ApartmentScorer:
     def _score_amenities(self, amenities_data: Dict) -> float:
         """Score amenity proximity (0-5 scale)"""
         density_score = amenities_data.get('amenity_density_score', 0.0)
-        walk_time = amenities_data.get('walk_time_minutes', float('inf'))
+        
+        # Handle None density score
+        if density_score is None:
+            density_score = 0.0
         
         # Convert 0-10 density to 0-5 scale
         density_component = (density_score / 10.0) * 5.0
         
-        # Walk time component
-        if walk_time < 5:
-            walk_component = 5.0
-        elif walk_time < 10:
-            walk_component = 3.0
-        elif walk_time < 15:
-            walk_component = 1.0
-        else:
-            walk_component = 0.0
-        
-        # Average both components
-        return (density_component + walk_component) / 2.0
+        # For now, just return density component (we don't have walk time to amenities area)
+        return density_component
     
     def _meets_all_preferences(
         self, 
@@ -163,14 +165,24 @@ class ApartmentScorer:
         subway_data: Dict
     ) -> bool:
         """Check if listing meets all preferences"""
-        best_commute = min(
-            (c.get('duration_minutes', float('inf')) for c in commutes.values()),
-            default=float('inf')
-        )
+        # Filter out None values from commute times
+        valid_commutes = [
+            c.get('duration_minutes')
+            for c in commutes.values()
+            if c.get('duration_minutes') is not None
+        ]
         
-        subway_walk = subway_data.get('walk_time_minutes', float('inf'))
+        if not valid_commutes:
+            return False
         
-        return best_commute < 30 and subway_walk < 5
+        worst_commute = max(valid_commutes)
+        subway_walk = subway_data.get('walk_time_minutes')
+        
+        # Check if both preferences are met
+        if subway_walk is None:
+            return False
+            
+        return worst_commute < 30 and subway_walk < 5
     
     def _generate_explanation(
         self, 

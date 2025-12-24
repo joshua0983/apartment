@@ -1,13 +1,16 @@
-# Apartment Location Evaluator
+# NYC Apartment Location Evaluator
 
-A Python tool that evaluates apartment locations based on commute times, subway proximity, and nearby amenities.
+A comprehensive tool for evaluating NYC apartment locations with a **REST API backend** and **browser extension** that automatically analyzes rental listings based on commute times, transit access, and amenities.
 
 ## Features
 
-- **Commute Analysis**: Calculate transit times to 3 office locations using Google Maps Distance Matrix API
-- **Subway Proximity**: Find nearest NYC subway station with walking time
-- **Amenity Analysis**: Discover nearby restaurants, cafes, bars, and bubble tea shops
-- **Automated Scoring**: Get a rating from 0.00 to 5.00 based on weighted criteria
+- **🚀 Browser Extension**: Automatically evaluate apartments on StreetEasy, Zillow, Apartments.com, and RentHop
+- **⚡ Async REST API**: FastAPI backend with parallel Google Maps API calls (~1 second per evaluation)
+- **🚇 Subway Proximity**: Find nearest NYC subway station with walking time
+- **🚌 Commute Analysis**: Calculate transit times to 4 office locations using Google Maps
+- **🍽️ Amenity Analysis**: Discover nearby restaurants, cafes, bars, and bubble tea shops  
+- **📊 Automated Scoring**: Get a rating from 0.00 to 5.00 based on weighted criteria
+- **💾 Smart Caching**: Instant responses for previously evaluated addresses (24-hour TTL)
 
 ## Requirements
 
@@ -42,33 +45,63 @@ A Python tool that evaluates apartment locations based on commute times, subway 
 4. **Configure office locations**:
    Edit `src/commute.py` to add your office addresses or Google Maps share links
 
-## Usage
+## Quick Start
 
-### Command Line
+### 1. Browser Extension (Recommended)
 
-Run the evaluator with an address:
+The easiest way to use this tool:
+
+```bash
+# Install dependencies and start API server
+pip install -r requirements.txt
+python -m uvicorn api.server:app --reload
+
+# In another terminal, set up the extension
+cd extension
+python3 create_icons.py
+
+# Load extension in Chrome:
+# 1. Go to chrome://extensions/
+# 2. Enable "Developer mode"
+# 3. Click "Load unpacked" → select the extension folder
+```
+
+Then visit any rental listing and click the extension icon!
+
+See [extension/README.md](extension/README.md) for detailed instructions.
+
+### 2. REST API
+
+Start the API server:
+
+```bash
+python -m uvicorn api.server:app --reload
+```
+
+Evaluate an address via API:
+
+```bash
+curl -X POST http://localhost:8000/evaluate \
+  -H "Content-Type: application/json" \
+  -d '{"address": "34-20 30th Street, Queens, NY 11101"}'
+```
+
+API Documentation: http://localhost:8000/docs
+
+### 3. Command Line
+
+Run the evaluator directly with an address:
 
 ```bash
 python test_address.py "123 Main St, Queens, NY 11101"
 ```
 
-Or use the main module directly:
+Or use the async version for faster results:
 
 ```bash
 cd src
-python main.py "34-20 30th Street, Queens, NY 11101"
+python main_async.py "34-20 30th Street, Queens, NY 11101"
 ```
-
-### As a Module
-
-```python
-from src.main import evaluate_address
-
-result = evaluate_address("34-20 30th Street, Queens, NY 11101")
-print(f"Score: {result['score']}/5.00")
-```
-
-Results will be saved to `output/evaluation_TIMESTAMP.json`
 
 ## Configuration
 

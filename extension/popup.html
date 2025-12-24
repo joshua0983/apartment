@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NYC Apartment Evaluator</title>
+  <style>
+    body {
+      width: 400px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .header h1 {
+      font-size: 18px;
+      margin: 0;
+      color: #1a73e8;
+    }
+    
+    .status {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    
+    .status.loading {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .status.idle {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+    
+    .score-display {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 16px;
+    }
+    
+    .score-number {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    .score-label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    
+    .details {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    
+    .detail-label {
+      font-weight: 500;
+      color: #555;
+      font-size: 13px;
+    }
+    
+    .detail-value {
+      color: #333;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .detail-value.good {
+      color: #28a745;
+    }
+    
+    .detail-value.warning {
+      color: #ffc107;
+    }
+    
+    .detail-value.bad {
+      color: #dc3545;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin: 16px 0 8px 0;
+    }
+    
+    .button {
+      width: 100%;
+      padding: 12px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    
+    .button:hover {
+      background: #1557b0;
+    }
+    
+    .button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .settings {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+    
+    .settings label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    
+    .settings input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+    
+    .cached-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #17a2b8;
+      color: white;
+      border-radius: 12px;
+      font-size: 11px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🏙️ NYC Apartment Evaluator</h1>
+  </div>
+  
+  <div id="status" class="status idle">
+    Click "Evaluate This Page" to analyze the apartment listing
+  </div>
+  
+  <div id="results" style="display: none;">
+    <div class="score-display">
+      <div class="score-number" id="score">-</div>
+      <div class="score-label">Overall Score (out of 5.00)</div>
+      <span id="cached-indicator"></span>
+    </div>
+    
+    <div class="section-title">📍 Commute Times</div>
+    <div class="details" id="commutes"></div>
+    
+    <div class="section-title">🚇 Nearest Subway</div>
+    <div class="details" id="subway"></div>
+    
+    <div class="section-title">🍽️ Nearby Amenities</div>
+    <div class="details" id="amenities"></div>
+    
+    <div class="section-title">📊 Score Breakdown</div>
+    <div class="details" id="breakdown"></div>
+  </div>
+  
+  <button id="evaluateBtn" class="button">Evaluate This Page</button>
+  
+  <div class="settings">
+    <label for="apiUrl">API Server URL:</label>
+    <input type="text" id="apiUrl" value="http://localhost:8000" />
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

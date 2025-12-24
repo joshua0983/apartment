@@ -136,7 +136,8 @@ class AsyncCommuteCalculator:
                     duration_minutes = round(duration_seconds / 60)
                     
                     distance_text = element['distance']['text']
-                    distance_miles = float(distance_text.split()[0]) if 'mi' in distance_text else None
+                    # Remove commas from distance numbers (e.g., "1,912 mi" -> "1912")
+                    distance_miles = float(distance_text.split()[0].replace(',', '')) if 'mi' in distance_text else None
                     
                     commute_data = {
                         'duration_minutes': duration_minutes,
