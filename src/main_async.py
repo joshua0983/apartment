@@ -129,12 +129,14 @@ async def evaluate_address_async(
     # Execute all async operations concurrently
     commutes_task = commute_calc.calculate_commutes(location_coords)
     amenities_task = proximity.find_activity_areas(location_coords)
-    
-    # Subway is synchronous (uses local data)
-    subway_data = proximity.find_nearest_subway(location_coords)
+    subway_task = proximity.find_nearest_subway_async(location_coords)
     
     # Wait for async tasks
-    commutes, amenities_data = await asyncio.gather(commutes_task, amenities_task)
+    commutes, amenities_data, subway_data = await asyncio.gather(
+        commutes_task,
+        amenities_task,
+        subway_task,
+    )
     
     if verbose:
         # Print commute results
