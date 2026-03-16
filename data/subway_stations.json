@@ -12,6 +12,12 @@
     "longitude": -73.912034
   },
   {
+    "name": "Broadway",
+    "lines": ["N", "W"],
+    "latitude": 40.761951,
+    "longitude": -73.925414
+  },
+  {
     "name": "30 Av",
     "lines": ["N", "W"],
     "latitude": 40.766779,
@@ -42,6 +48,24 @@
     "longitude": -73.937243
   },
   {
+    "name": "21 St-Queensbridge",
+    "lines": ["F"],
+    "latitude": 40.75417,
+    "longitude": -73.9425
+  },
+  {
+    "name": "Vernon Blvd-Jackson Av",
+    "lines": ["7"],
+    "latitude": 40.74264,
+    "longitude": -73.95391
+  },
+  {
+    "name": "Hunters Point Av",
+    "lines": ["7"],
+    "latitude": 40.7423806,
+    "longitude": -73.9492583
+  },
+  {
     "name": "Court Sq",
     "lines": ["E", "M", "7"],
     "latitude": 40.747023,
@@ -52,6 +76,30 @@
     "lines": ["G"],
     "latitude": 40.747846,
     "longitude": -73.946
+  },
+  {
+    "name": "40 St-Lowery St",
+    "lines": ["7"],
+    "latitude": 40.7447,
+    "longitude": -73.9240
+  },
+  {
+    "name": "46 St-Bliss St",
+    "lines": ["7"],
+    "latitude": 40.7433,
+    "longitude": -73.9184
+  },
+  {
+    "name": "52 St-Lincoln Av",
+    "lines": ["7"],
+    "latitude": 40.7440,
+    "longitude": -73.9124
+  },
+  {
+    "name": "61 St-Woodside",
+    "lines": ["7"],
+    "latitude": 40.7456,
+    "longitude": -73.9028
   },
   {
     "name": "Flushing-Main St",
