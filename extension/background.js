@@ -1,21 +1,42 @@
-// Background service worker - NYC Apartment Evaluator
-// Minimal implementation for Chrome Manifest V3
+import { Evaluator } from './lib/evaluator.js';
 
-const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
-
-// Set default settings on install
-browserAPI.runtime.onInstalled.addListener((details) => {
-  if (details.reason === 'install') {
-    browserAPI.storage.sync.set({ apiUrl: 'http://localhost:8000' });
-    console.log('[Background] Extension installed, defaults set');
-  }
+// Open options on install
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason === 'install') {
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        } else {
+            window.open(chrome.runtime.getURL('options.html'));
+        }
+    }
 });
 
-// Message handler (currently unused, popup handles everything)
-browserAPI.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('[Background] Message received:', request.action);
-  return true;
-});
+// Setup listener
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'evaluateAddress') {
+        const { address } = request;
+        
+        chrome.storage.sync.get(['googleApiKey', 'officeLocations'], (storage) => {
+            const apiKey = storage.googleApiKey;
+            const offices = storage.officeLocations;
 
-console.log('[Background] Service worker loaded');
+            if (!apiKey) {
+                sendResponse({ error: 'No API Key configured. Please go to Extension Options to set it up.' });
+                return;
+            }
+
+            const evaluator = new Evaluator(apiKey, offices);
+            evaluator.evaluate(address)
+                .then(result => {
+                    sendResponse(result);
+                })
+                .catch(error => {
+                    console.error('Evaluation failed:', error);
+                    sendResponse({ error: error.message });
+                });
+        });
+        
+        return true; // Keep channel open for async response
+    }
+});
 
